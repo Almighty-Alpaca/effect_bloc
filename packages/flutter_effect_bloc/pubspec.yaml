@@ -1,6 +1,6 @@
 name: flutter_effect_bloc
 description: flutter_effect_bloc
-version: 0.0.1
+version: 0.0.2
 homepage: https://github.com/allbrightio/packages/flutter_effect_bloc
 
 environment:
@@ -10,22 +10,13 @@ dependencies:
   flutter:
     sdk: flutter
   effect_bloc: ^0.0.1
-  flutter_bloc:
-    git:
-      url: https://github.com/allbrightio/bloc
-      path: packages/flutter_bloc
-      ref: gocal/bloc_interface
+  flutter_bloc: ^8.0.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  lint: ^1.5.3
+  lint: ^1.8.2
 
 dependency_overrides:
   effect_bloc:
     path: ../effect_bloc/
-  bloc:
-    git:
-      url: https://github.com/allbrightio/bloc
-      path: packages/bloc
-      ref: gocal/bloc_interface

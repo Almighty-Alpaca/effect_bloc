@@ -42,10 +42,13 @@ class SimpleBlocObserver extends BlocObserver {
 }
 
 void main() {
-  Bloc.observer = SimpleBlocObserver();
-
-  cubitMain();
-  blocMain();
+  BlocOverrides.runZoned(
+    () {
+      cubitMain();
+      blocMain();
+    },
+    blocObserver: SimpleBlocObserver(),
+  );
 }
 
 void cubitMain() {
@@ -77,7 +80,7 @@ void blocMain() async {
   print(bloc.state);
 
   /// Interact with the `bloc` to trigger `state` changes.
-  bloc.add(CounterEvent.increment);
+  bloc.add(CounterEventIncrement());
 
   /// Wait for next iteration of the event-loop
   /// to ensure event has been processed.
@@ -117,23 +120,25 @@ class CounterCubit extends Cubit<int> with BlocEffect<int, CounterEffect> {
 }
 
 /// The events which `CounterBloc` will react to.
-enum CounterEvent { increment }
+abstract class CounterEvent {
+  const CounterEvent();
+}
+
+class CounterEventIncrement extends CounterEvent {
+  const CounterEventIncrement();
+}
 
 /// A `CounterBloc` which handles converting `CounterEvent`s into `int`s.
 class CounterBloc extends Bloc<CounterEvent, int> {
   /// The initial state of the `CounterBloc` is 0.
-  CounterBloc() : super(0);
+  CounterBloc() : super(0) {
+    on<CounterEventIncrement>(_onIncrement);
+  }
 
-  @override
-  Stream<int> mapEventToState(CounterEvent event) async* {
-    switch (event) {
-
-      /// When a `CounterEvent.increment` event is added,
-      /// the current `state` of the bloc is accessed via the `state` property
-      /// and a new state is emitted via `yield`.
-      case CounterEvent.increment:
-        yield state + 1;
-        break;
-    }
+  void _onIncrement(
+    CounterEventIncrement event,
+    Emitter<int> emit,
+  ) {
+    emit(state + 1);
   }
 }
