@@ -6,7 +6,7 @@ import 'package:meta/meta.dart';
 ///
 /// Bloc with side effects
 ///
-abstract class EffectBloc<Event, State, Effect> extends Bloc<State, State>
+abstract class EffectBloc<Event, State, Effect> extends Bloc<Event, State>
     with BlocEffect<State, Effect> {
   EffectBloc(State initialState) : super(initialState);
 }
